@@ -8,21 +8,21 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "C:/.git/OpenGL/lib/GLFW/src/context.c" "lib/GLFW/src/CMakeFiles/glfw.dir/context.c.obj" "gcc" "lib/GLFW/src/CMakeFiles/glfw.dir/context.c.obj.d"
-  "C:/.git/OpenGL/lib/GLFW/src/egl_context.c" "lib/GLFW/src/CMakeFiles/glfw.dir/egl_context.c.obj" "gcc" "lib/GLFW/src/CMakeFiles/glfw.dir/egl_context.c.obj.d"
-  "C:/.git/OpenGL/lib/GLFW/src/init.c" "lib/GLFW/src/CMakeFiles/glfw.dir/init.c.obj" "gcc" "lib/GLFW/src/CMakeFiles/glfw.dir/init.c.obj.d"
-  "C:/.git/OpenGL/lib/GLFW/src/input.c" "lib/GLFW/src/CMakeFiles/glfw.dir/input.c.obj" "gcc" "lib/GLFW/src/CMakeFiles/glfw.dir/input.c.obj.d"
-  "C:/.git/OpenGL/lib/GLFW/src/monitor.c" "lib/GLFW/src/CMakeFiles/glfw.dir/monitor.c.obj" "gcc" "lib/GLFW/src/CMakeFiles/glfw.dir/monitor.c.obj.d"
-  "C:/.git/OpenGL/lib/GLFW/src/osmesa_context.c" "lib/GLFW/src/CMakeFiles/glfw.dir/osmesa_context.c.obj" "gcc" "lib/GLFW/src/CMakeFiles/glfw.dir/osmesa_context.c.obj.d"
-  "C:/.git/OpenGL/lib/GLFW/src/vulkan.c" "lib/GLFW/src/CMakeFiles/glfw.dir/vulkan.c.obj" "gcc" "lib/GLFW/src/CMakeFiles/glfw.dir/vulkan.c.obj.d"
-  "C:/.git/OpenGL/lib/GLFW/src/wgl_context.c" "lib/GLFW/src/CMakeFiles/glfw.dir/wgl_context.c.obj" "gcc" "lib/GLFW/src/CMakeFiles/glfw.dir/wgl_context.c.obj.d"
-  "C:/.git/OpenGL/lib/GLFW/src/win32_init.c" "lib/GLFW/src/CMakeFiles/glfw.dir/win32_init.c.obj" "gcc" "lib/GLFW/src/CMakeFiles/glfw.dir/win32_init.c.obj.d"
-  "C:/.git/OpenGL/lib/GLFW/src/win32_joystick.c" "lib/GLFW/src/CMakeFiles/glfw.dir/win32_joystick.c.obj" "gcc" "lib/GLFW/src/CMakeFiles/glfw.dir/win32_joystick.c.obj.d"
-  "C:/.git/OpenGL/lib/GLFW/src/win32_monitor.c" "lib/GLFW/src/CMakeFiles/glfw.dir/win32_monitor.c.obj" "gcc" "lib/GLFW/src/CMakeFiles/glfw.dir/win32_monitor.c.obj.d"
-  "C:/.git/OpenGL/lib/GLFW/src/win32_thread.c" "lib/GLFW/src/CMakeFiles/glfw.dir/win32_thread.c.obj" "gcc" "lib/GLFW/src/CMakeFiles/glfw.dir/win32_thread.c.obj.d"
-  "C:/.git/OpenGL/lib/GLFW/src/win32_time.c" "lib/GLFW/src/CMakeFiles/glfw.dir/win32_time.c.obj" "gcc" "lib/GLFW/src/CMakeFiles/glfw.dir/win32_time.c.obj.d"
-  "C:/.git/OpenGL/lib/GLFW/src/win32_window.c" "lib/GLFW/src/CMakeFiles/glfw.dir/win32_window.c.obj" "gcc" "lib/GLFW/src/CMakeFiles/glfw.dir/win32_window.c.obj.d"
-  "C:/.git/OpenGL/lib/GLFW/src/window.c" "lib/GLFW/src/CMakeFiles/glfw.dir/window.c.obj" "gcc" "lib/GLFW/src/CMakeFiles/glfw.dir/window.c.obj.d"
+  "/Users/nick/Documents/git/OpenGL/lib/GLFW/src/cocoa_init.m" "lib/GLFW/src/CMakeFiles/glfw.dir/cocoa_init.m.o" "gcc" "lib/GLFW/src/CMakeFiles/glfw.dir/cocoa_init.m.o.d"
+  "/Users/nick/Documents/git/OpenGL/lib/GLFW/src/cocoa_joystick.m" "lib/GLFW/src/CMakeFiles/glfw.dir/cocoa_joystick.m.o" "gcc" "lib/GLFW/src/CMakeFiles/glfw.dir/cocoa_joystick.m.o.d"
+  "/Users/nick/Documents/git/OpenGL/lib/GLFW/src/cocoa_monitor.m" "lib/GLFW/src/CMakeFiles/glfw.dir/cocoa_monitor.m.o" "gcc" "lib/GLFW/src/CMakeFiles/glfw.dir/cocoa_monitor.m.o.d"
+  "/Users/nick/Documents/git/OpenGL/lib/GLFW/src/cocoa_time.c" "lib/GLFW/src/CMakeFiles/glfw.dir/cocoa_time.c.o" "gcc" "lib/GLFW/src/CMakeFiles/glfw.dir/cocoa_time.c.o.d"
+  "/Users/nick/Documents/git/OpenGL/lib/GLFW/src/cocoa_window.m" "lib/GLFW/src/CMakeFiles/glfw.dir/cocoa_window.m.o" "gcc" "lib/GLFW/src/CMakeFiles/glfw.dir/cocoa_window.m.o.d"
+  "/Users/nick/Documents/git/OpenGL/lib/GLFW/src/context.c" "lib/GLFW/src/CMakeFiles/glfw.dir/context.c.o" "gcc" "lib/GLFW/src/CMakeFiles/glfw.dir/context.c.o.d"
+  "/Users/nick/Documents/git/OpenGL/lib/GLFW/src/egl_context.c" "lib/GLFW/src/CMakeFiles/glfw.dir/egl_context.c.o" "gcc" "lib/GLFW/src/CMakeFiles/glfw.dir/egl_context.c.o.d"
+  "/Users/nick/Documents/git/OpenGL/lib/GLFW/src/init.c" "lib/GLFW/src/CMakeFiles/glfw.dir/init.c.o" "gcc" "lib/GLFW/src/CMakeFiles/glfw.dir/init.c.o.d"
+  "/Users/nick/Documents/git/OpenGL/lib/GLFW/src/input.c" "lib/GLFW/src/CMakeFiles/glfw.dir/input.c.o" "gcc" "lib/GLFW/src/CMakeFiles/glfw.dir/input.c.o.d"
+  "/Users/nick/Documents/git/OpenGL/lib/GLFW/src/monitor.c" "lib/GLFW/src/CMakeFiles/glfw.dir/monitor.c.o" "gcc" "lib/GLFW/src/CMakeFiles/glfw.dir/monitor.c.o.d"
+  "/Users/nick/Documents/git/OpenGL/lib/GLFW/src/nsgl_context.m" "lib/GLFW/src/CMakeFiles/glfw.dir/nsgl_context.m.o" "gcc" "lib/GLFW/src/CMakeFiles/glfw.dir/nsgl_context.m.o.d"
+  "/Users/nick/Documents/git/OpenGL/lib/GLFW/src/osmesa_context.c" "lib/GLFW/src/CMakeFiles/glfw.dir/osmesa_context.c.o" "gcc" "lib/GLFW/src/CMakeFiles/glfw.dir/osmesa_context.c.o.d"
+  "/Users/nick/Documents/git/OpenGL/lib/GLFW/src/posix_thread.c" "lib/GLFW/src/CMakeFiles/glfw.dir/posix_thread.c.o" "gcc" "lib/GLFW/src/CMakeFiles/glfw.dir/posix_thread.c.o.d"
+  "/Users/nick/Documents/git/OpenGL/lib/GLFW/src/vulkan.c" "lib/GLFW/src/CMakeFiles/glfw.dir/vulkan.c.o" "gcc" "lib/GLFW/src/CMakeFiles/glfw.dir/vulkan.c.o.d"
+  "/Users/nick/Documents/git/OpenGL/lib/GLFW/src/window.c" "lib/GLFW/src/CMakeFiles/glfw.dir/window.c.o" "gcc" "lib/GLFW/src/CMakeFiles/glfw.dir/window.c.o.d"
   )
 
 # Targets to which this target links.
