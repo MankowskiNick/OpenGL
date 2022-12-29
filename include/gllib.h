@@ -23,7 +23,7 @@ class GLLib {
             if (error_callback_func != NULL)
                 glfwSetErrorCallback(error_callback_func);
             // Init GLFW
-            if (!glfwInit())
+            if (!glfwInit()) 
                 return false;
                 //exit(EXIT_FAILURE);
         
@@ -101,6 +101,10 @@ class GLLib {
         //std::vector<GLuint> VAOs;
         //std::vector<GLuint> VBOs;
         //std::vector<GLuint> EBOs;
+
+        GLuint* VAOs;
+        GLuint* VBOs;
+        GLuint* EBOs;
 
         Shader shader;
 
