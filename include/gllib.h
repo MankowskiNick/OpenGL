@@ -9,16 +9,22 @@
 
 class GLLib {
     public:
-        GLLib() {}
-        ~GLLib() {}
+        GLLib() { 
+            VAOs = new GLuint;
+            VBOs = new GLuint;
+            EBOs = new GLuint;
+            
+            VAOs_size = 0;
+            VBOs_size = 0;
+            EBOs_size = 0;
+        }
+        ~GLLib() { }
 
         bool Init(GLFWwindow*& window, 
             std::string window_name, 
             void (*error_callback_func)(int, const char*) = NULL, 
             void (*key_callback_func)(GLFWwindow*, int, int, int, int) = NULL
-        ) {
-
-            
+        ) { 
             // Set error callback
             if (error_callback_func != NULL)
                 glfwSetErrorCallback(error_callback_func);
@@ -86,25 +92,43 @@ class GLLib {
             if (error_callback_func != NULL) 
                 glfwSetErrorCallback(error_callback_func);
         }
-        
-        void BufferData(const std::vector< std::vector<float> >& vertices) {
-            int buffer_count = vertices.size();
-            //for (int i = 0; i < vertices.size(); i++) {
-            //    VAOs.push_back(GLuint());
-            //    glGenVertexArrays
-            //}
-            
 
+        void BufferData(float* vertices_head, int size, int degree = 3) { // honestly, this might not work.
+
+            GLuint* new_vao_ptr = AddBuffer(VAOs, VAOs_size);
+            glGenVertexArrays(1, new_vao_ptr);
+
+            GLuint* new_vbo_ptr = AddBuffer(VBOs, VBOs_size);
+            glGenBuffers(1, new_vbo_ptr);
+
+            glBindBuffer(GL_ARRAY_BUFFER, *new_vbo_ptr); // may not be needed
+            glBufferData(GL_ARRAY_BUFFER, sizeof(float) * size, vertices_head, GL_STATIC_DRAW);
+            glVertexAttribPointer(0, degree, GL_FLOAT, GL_FALSE, degree * sizeof(float), (void*)0);
+            glEnableVertexAttribArray(size - 1); // may not be needed
         }
 
     private:
-        //std::vector<GLuint> VAOs;
-        //std::vector<GLuint> VBOs;
-        //std::vector<GLuint> EBOs;
+        GLuint* AddBuffer(GLuint*& buffer, int& size) {
+            //GLuint* temp_buffer = buffer;
+            //for (int i = 0; i < size; i++) {
+            //    int offset = i * sizeof(GLuint);
+            //    *(buffer + offset) = *(temp_buffer + offset);
+            //}
+
+            GLuint* end_ptr = (VAOs + (size * sizeof(GLuint)));
+            *end_ptr = GLuint();
+            size++;
+
+            return end_ptr;
+        }
 
         GLuint* VAOs;
         GLuint* VBOs;
         GLuint* EBOs;
+
+        int VAOs_size;
+        int VBOs_size;
+        int EBOs_size;
 
         Shader shader;
 

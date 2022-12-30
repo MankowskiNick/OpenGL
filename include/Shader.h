@@ -44,7 +44,7 @@ class Shader {
             std::ifstream fin;
             if (type == GL_VERTEX_SHADER) {
                 fin.open(file_name.data());
-                if (!fin) {
+                if (!fin.is_open()) {
                     error_msg += "Error: Vertex shader source file doesn't exist.  (" + file_name + ") \n";
                     fin.close();
                     return;
@@ -53,9 +53,9 @@ class Shader {
             else if (type == GL_FRAGMENT_SHADER) {
                 fin.open(file_name.data());
                 if (!fin) {
-                    error_msg += "Error: Fragment shader source file doesn't exist.  (" + file_name + ") \n";
-                    fin.close();
-                    return;
+                  error_msg += "Error: Fragment shader source file doesn't exist.  (" + file_name + ") \n";
+                  fin.close();
+                  return;
                 }
             }
             while (!fin.eof()) {
