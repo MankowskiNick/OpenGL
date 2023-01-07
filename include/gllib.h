@@ -93,29 +93,38 @@ class GLLib {
                 glfwSetErrorCallback(error_callback_func);
         }
 
-        void BufferData(float* vertices_head, int size, int degree = 3) { // honestly, this might not work.
+        void BufferVertices(float* vertices_head, int size, int degree = 3) {
 
             GLuint* new_vao_ptr = AddBuffer(VAOs, VAOs_size);
             glGenVertexArrays(1, new_vao_ptr);
+            glBindVertexArray(*new_vao_ptr);
 
             GLuint* new_vbo_ptr = AddBuffer(VBOs, VBOs_size);
             glGenBuffers(1, new_vbo_ptr);
 
-            glBindBuffer(GL_ARRAY_BUFFER, *new_vbo_ptr); // may not be needed
+            glBindBuffer(GL_ARRAY_BUFFER, *new_vbo_ptr); 
             glBufferData(GL_ARRAY_BUFFER, sizeof(float) * size, vertices_head, GL_STATIC_DRAW);
             glVertexAttribPointer(0, degree, GL_FLOAT, GL_FALSE, degree * sizeof(float), (void*)0);
-            glEnableVertexAttribArray(size - 1); // may not be needed
+            glEnableVertexAttribArray(0);
+        }
+
+        void BufferIndices(unsigned int* indices_head, int size) {
+            GLuint* new_ebo_ptr = AddBuffer(EBOs, EBOs_size);
+            glGenBuffers(1, new_ebo_ptr);
+
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *new_ebo_ptr);
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, indices_head, GL_STATIC_DRAW); 
+        }
+
+        void SwapVAO(int new_index) {
+            GLuint new_vao = *(VAOs + new_index * sizeof(int));
+            glBindVertexArray(new_vao);
         }
 
     private:
-        GLuint* AddBuffer(GLuint*& buffer, int& size) {
-            //GLuint* temp_buffer = buffer;
-            //for (int i = 0; i < size; i++) {
-            //    int offset = i * sizeof(GLuint);
-            //    *(buffer + offset) = *(temp_buffer + offset);
-            //}
+        GLuint* AddBuffer(GLuint* buffer, int& size) {
 
-            GLuint* end_ptr = (VAOs + (size * sizeof(GLuint)));
+            GLuint* end_ptr = (buffer + (size * sizeof(GLuint)));
             *end_ptr = GLuint();
             size++;
 
@@ -131,15 +140,6 @@ class GLLib {
         int EBOs_size;
 
         Shader shader;
-
-        //void (*error_callback_func)(int, const char*);
-        //void (*key_callback)(GLFWwindow*, int, int, int, int);
-        
-        //void processInput(GLFWwindow* window) { // This could be expanded into something else
-        //    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-       //        glfwSetWindowShouldClose(window, true);
-        //    }
-        //}
 };
 
 #endif

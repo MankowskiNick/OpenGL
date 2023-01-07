@@ -68,8 +68,8 @@ class Shader {
 
         unsigned int CreateShader(const std::string& vertexShader, const std::string& fragmentShader) {
             unsigned int program = glCreateProgram();
-            unsigned int vShader = Compile(GL_VERTEX_SHADER, vertexShader);
-            unsigned int fShader = Compile(GL_FRAGMENT_SHADER, fragmentShader);
+            vShader = Compile(GL_VERTEX_SHADER, vertexShader);
+            fShader = Compile(GL_FRAGMENT_SHADER, fragmentShader);
 
             // Link shaders into one program
             glAttachShader(program, vShader);
@@ -86,7 +86,7 @@ class Shader {
         }
 
         unsigned int Compile(unsigned int type, const std::string& source) {
-            unsigned int id = glCreateShader(type);
+            id = glCreateShader(type);
             const char* src = &source[0];
             glShaderSource(id, 1, &src, NULL);
             glCompileShader(id);
