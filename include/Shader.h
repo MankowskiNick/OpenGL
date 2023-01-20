@@ -22,6 +22,20 @@ class Shader {
             return id;
         }
 
+        void Use() {
+            glUseProgram(id);
+        }
+
+        void SetBool(const std::string& name, bool value) const {
+            glUniform1i(glGetUniformLocation(id, name.c_str()), (int)value);
+        }        
+        void SetInt(const std::string& name, int value) const {
+            glUniform1i(glGetUniformLocation(id, name.c_str()), value);
+        }
+        void SetFloat(const std::string& name, float value) const {
+            glUniform1f(glGetUniformLocation(id, name.c_str()), value);
+        }
+
         void CompileShader(const std::string& vert_shader_file, const std::string& frag_shader_file) {
             std::string load_error_msg = "";
 
@@ -37,6 +51,7 @@ class Shader {
 
             id = CreateShader(vert_shader_source, frag_shader_source);
         }
+        
     private:
         unsigned int id, vShader, fShader;
         
@@ -86,7 +101,7 @@ class Shader {
         }
 
         unsigned int Compile(unsigned int type, const std::string& source) {
-            id = glCreateShader(type);
+            unsigned int id = glCreateShader(type);
             const char* src = &source[0];
             glShaderSource(id, 1, &src, NULL);
             glCompileShader(id);

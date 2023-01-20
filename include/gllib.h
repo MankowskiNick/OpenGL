@@ -75,7 +75,7 @@ class GLLib {
             try {
                 // Compile vertex shader
                 shader = Shader(vert_shader_file, frag_shader_file);
-                glUseProgram(shader.GetProgramID());
+                shader.Use();
                 return true; 
             }
             catch(...) {
@@ -121,6 +121,11 @@ class GLLib {
             glBindVertexArray(new_vao);
         }
 
+        unsigned int GetShaderProgram() {
+            return shader.GetProgramID();
+        }
+
+        Shader shader;
     private:
         GLuint* AddBuffer(GLuint* buffer, int& size) {
 
@@ -139,7 +144,6 @@ class GLLib {
         int VBOs_size;
         int EBOs_size;
 
-        Shader shader;
 };
 
 #endif

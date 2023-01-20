@@ -5,6 +5,7 @@
 #include <Shader.h>
 #include <gllib.h>
 #include <iostream> 
+#include <math.h>
  
 void error_callback(int error, const char* description) {
     fprintf(stderr, "Error: %s\n", description);
@@ -25,7 +26,6 @@ int main(void)
     gl_lib->BindShader("shaders/shader.vsh", "shaders/shader.fsh");
 
     // GLFW & Glad loaded
-
     float vertices[] = {
         -0.5f, -0.5f, 0.0f,
         0.5f, -0.5f, 0.0f,
@@ -46,19 +46,8 @@ int main(void)
         0, 1, 3,   // first triangle
         1, 2, 3    // second triangle
     };
-    /*
-    unsigned int VBO, VAO;
-    glGenVertexArrays(1, &VAO);
-    glBindVertexArray(VAO);
 
-
-    glGenBuffers(1, &VBO);  
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);  
-    */
-
+    // Maybe we can abstract this differently, or pass in a function to handle this for
     gl_lib->BufferVertices(vertices, sizeof(vertices), 3);
 
     gl_lib->BufferVertices(vertices2, sizeof(vertices2), 3);
@@ -75,12 +64,15 @@ int main(void)
         //glDrawArrays(GL_TRIANGLES, 0, sizeof(vertices) / sizeof(float) / 3); // Draw the triangle
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0); // Draw rectangle using the EBO
 
+        float timeValue = glfwGetTime();
+        float greenValue = (sin(timeValue) / 2) + 0.5;
+        gl_lib->shader.SetFloat("greenValue", greenValue);
+
         glfwPollEvents();
         glfwSwapBuffers(window);
     }
  
     glfwDestroyWindow(window);
- 
     glfwTerminate();
     exit(EXIT_SUCCESS);
 }
