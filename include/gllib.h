@@ -31,7 +31,6 @@ class GLLib {
             // Init GLFW
             if (!glfwInit()) 
                 return false;
-                //exit(EXIT_FAILURE);
         
             // Window hints
             glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -108,6 +107,23 @@ class GLLib {
             glEnableVertexAttribArray(0);
         }
 
+        void BufferVerticesWithTextureCoords(float* vertices_head, int size) {
+            GLuint* new_vao_ptr = AddBuffer(VAOs, VAOs_size);
+            glGenVertexArrays(1, new_vao_ptr);
+            glBindVertexArray(*new_vao_ptr);
+
+            GLuint* new_vbo_ptr = AddBuffer(VBOs, VBOs_size);
+            glGenBuffers(1, new_vbo_ptr);
+
+            glBindBuffer(GL_ARRAY_BUFFER, *new_vbo_ptr); 
+            glBufferData(GL_ARRAY_BUFFER, sizeof(float) * size, vertices_head, GL_STATIC_DRAW);
+            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+            glEnableVertexAttribArray(0);
+
+            glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+            glEnableVertexAttribArray(1);
+        }
+
         void BufferIndices(unsigned int* indices_head, int size) {
             GLuint* new_ebo_ptr = AddBuffer(EBOs, EBOs_size);
             glGenBuffers(1, new_ebo_ptr);
@@ -118,11 +134,16 @@ class GLLib {
 
         void SwapVAO(int new_index) {
             GLuint new_vao = *(VAOs + new_index * sizeof(int));
+            CurVAO = new_vao;
             glBindVertexArray(new_vao);
         }
 
         unsigned int GetShaderProgram() {
             return shader.GetProgramID();
+        }
+
+        GLuint GetVAO() {
+            return CurVAO;
         }
 
         Shader shader;
@@ -135,6 +156,10 @@ class GLLib {
 
             return end_ptr;
         }
+
+        GLuint CurVAO;
+        GLuint CurVBO;
+        GLuint CurEBO;
 
         GLuint* VAOs;
         GLuint* VBOs;
