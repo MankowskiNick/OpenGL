@@ -108,7 +108,7 @@ class GLLib {
         }
 
         void BufferVerticesWithTextureCoords(float* vertices_head, int size) {
-            GLuint* new_vao_ptr = AddBuffer(VAOs, VAOs_size);
+            GLuint* new_vao_ptr = AddBuffer(VAOs, VAOs_size);// TODO: we could abstract away this to an AddVao function, i think it would be more useful
             glGenVertexArrays(1, new_vao_ptr);
             glBindVertexArray(*new_vao_ptr);
 

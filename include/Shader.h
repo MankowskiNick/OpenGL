@@ -26,14 +26,17 @@ class Shader {
             glUseProgram(id);
         }
 
-        void SetBool(const std::string& name, bool value) const {
-            glUniform1i(glGetUniformLocation(id, name.c_str()), (int)value);
+        void SetBool(const char* name, bool value) const {
+            glUniform1i(glGetUniformLocation(id, name), (int)value);
         }        
-        void SetInt(const std::string& name, int value) const {
-            glUniform1i(glGetUniformLocation(id, name.c_str()), value);
+        void SetInt(const char* name, int value) const {
+            glUniform1i(glGetUniformLocation(id, name), value);
         }
-        void SetFloat(const std::string& name, float value) const {
-            glUniform1f(glGetUniformLocation(id, name.c_str()), value);
+        void SetFloat(const char* name, float value) const {
+            glUniform1f(glGetUniformLocation(id, name), value);
+        }
+        void SetMat4f(const char* name, glm::mat4 value) const {
+            glUniformMatrix4fv(glGetUniformLocation(id, name), 1, GL_FALSE, glm::value_ptr(value));
         }
 
         void CompileShader(const std::string& vert_shader_file, const std::string& frag_shader_file) {
