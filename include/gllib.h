@@ -7,6 +7,9 @@
 #include <vector>
 #include <Shader.h>
 
+#include <utility>
+#include <functional>
+
 class GLLib {
     public:
         GLLib() { 
@@ -21,7 +24,9 @@ class GLLib {
         ~GLLib() { }
 
         bool Init(GLFWwindow*& window, 
-            std::string window_name, 
+            const char* window_name, 
+            const int window_width,
+            const int window_height,
             void (*error_callback_func)(int, const char*) = NULL, 
             void (*key_callback_func)(GLFWwindow*, int, int, int, int) = NULL
         ) { 
@@ -41,10 +46,9 @@ class GLLib {
             #endif
 
             // Create window
-            window = glfwCreateWindow(640, 480, window_name.data(), NULL, NULL);
-                
-            if (key_callback_func != NULL)
-                glfwSetKeyCallback(window, key_callback_func);   
+            width = window_width;
+            height = window_height;
+            window = glfwCreateWindow(width, height, window_name, NULL, NULL);
 
             // Window creation failure
             if (!window)
@@ -52,6 +56,9 @@ class GLLib {
                 glfwTerminate();
                 return false;
             }
+
+            if (key_callback_func != NULL)
+                glfwSetKeyCallback(window, key_callback_func);   
 
             // Set OpenGL context
             glfwMakeContextCurrent(window);
@@ -66,10 +73,20 @@ class GLLib {
                 return false;
             }
 
+            glEnable(GL_DEPTH_TEST);
+
             return true;
 
         }
         
+        int GetWidth() {
+            return width;
+        }
+        
+        int GetHeight() {
+            return height;
+        }
+
         bool BindShader(const std::string& vert_shader_file, const std::string& frag_shader_file) {
             try {
                 // Compile vertex shader
@@ -142,12 +159,22 @@ class GLLib {
             return shader.GetProgramID();
         }
 
+        void DrawTrianglesEbo(unsigned int num_vertices) {
+            glDrawElements(GL_TRIANGLES, num_vertices, GL_UNSIGNED_INT, 0); // Draw rectangle using the EBO
+        }
+
+        void DrawTriangles(unsigned int num_vertices) {
+            glDrawArrays(GL_TRIANGLES, 0, num_vertices);
+        }
+
         GLuint GetVAO() {
             return CurVAO;
         }
 
         Shader shader;
     private:
+        int width, height;
+
         GLuint* AddBuffer(GLuint* buffer, int& size) {
 
             GLuint* end_ptr = (buffer + (size * sizeof(GLuint)));

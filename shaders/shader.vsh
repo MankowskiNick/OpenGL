@@ -3,14 +3,13 @@
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec2 inTexCoord;
 
-out vec4 vertexColor;
 out vec2 TexCoord;
 
-uniform float greenValue;
-uniform mat4 transform;
+uniform mat4 projMatrix;
+uniform mat4 viewMatrix;
+uniform mat4 modelMatrix;
 
 void main() {
-    gl_Position = transform * vec4(aPos.x, aPos.y, aPos.z, 1.0);
-    vertexColor = vec4(0.5f, greenValue, 0.5f, 1.0f);
+    gl_Position = projMatrix * viewMatrix * modelMatrix * vec4(aPos.x, aPos.y, aPos.z, 1.0);
     TexCoord = inTexCoord;
 }
