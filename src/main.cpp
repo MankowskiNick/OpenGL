@@ -11,7 +11,15 @@
 #include <camera.h>
 #include <iostream> 
 #include <math.h>
- 
+
+Camera* global_camera = NULL;
+GLLib* gl_lib = NULL;
+GLFWwindow* window = NULL;
+
+double last_mousex;
+double last_mousey;
+
+
 void error_callback(int error, const char* description) {
     fprintf(stderr, "Error: %s\n", description);
 }
@@ -19,15 +27,23 @@ void error_callback(int error, const char* description) {
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GLFW_TRUE);
+    global_camera->Walk(key);
+}
+
+void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
+    double dx = xpos - last_mousex;
+    double dy = ypos - last_mousey;
+
+    global_camera->UpdateLookDirection(dx, dy);
+    last_mousex = xpos;
+    last_mousey = ypos;
 }
 
 int main(void)
 {
-    GLFWwindow* window = NULL;
-
-    GLLib* gl_lib = NULL;
+    
     gl_lib = new GLLib;
-    if (!gl_lib->Init(window, "OpenGL Boiler", 640, 480, error_callback, key_callback)) 
+    if (!gl_lib->Init(window, "OpenGL Boiler", 640, 480, error_callback, key_callback, mouse_callback)) 
         return 1;
     gl_lib->BindShader("shaders/shader.vsh", "shaders/shader.fsh");
 
@@ -126,7 +142,8 @@ int main(void)
 
     //glm::mat4 view = glm::mat4(1.0f);
     //view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-    Camera camera = Camera(0.0f, 0.0f, 3.0f);
+    Camera camera = Camera(1.0f, 0.0f, 0.0f);
+    global_camera = &camera;
 
     gl_lib->shader.SetMat4f("projMatrix", proj);
     gl_lib->shader.SetMat4f("modelMatrix", model);
@@ -148,10 +165,9 @@ int main(void)
     //main while loop
     while (!glfwWindowShouldClose(window))
     {
-        //cameraPos = //glm::rotate(cameraPos, glfwGetTime(), glm::vec3(0.0f, 1.0f, 0.0f));
         i += 0.01;
 
-        camera.UpdatePos(6.0f * cos(i), 0.0f, 6.0f * sin(i) );
+        //camera.UpdatePos(6.0f * cos(i), 0.0f, 6.0f * sin(i) );
 
         gl_lib->shader.SetMat4f("viewMatrix", camera.GetView());
 
