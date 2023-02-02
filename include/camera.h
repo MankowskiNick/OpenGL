@@ -1,6 +1,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
+#include <math.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -8,51 +9,59 @@
 class Camera {
     public:
         Camera() {
-            x = 0.0f;
-            y = 0.0f;
-            z = 0.0f;
-            UpdateDirectionToTarget(glm::vec3(0.0f, 0.0f, 0.0f)); // initialize to look at 0,0,0
-            UpdateView();
+            Camera(0.0f, 0.0f, 0.0f);
         }
 
         Camera(float new_x, float new_y, float new_z) {
             x = new_x;
             y = new_y;
             z = new_z;
-            UpdateDirectionToTarget(glm::vec3(0.0f, 0.0f, 0.0f)); // initialize to look at 0,0,0
+            horiz_angle = 0.0f;
+            vert_angle = 0.0f;
+            UpdateDirection(glm::vec3(-0.33f, -0.33f, -1.0f));
             UpdateView();
         }
 
-        void IncrementPos(float add_x, float add_y, float add_z) {
-            UpdatePos(x + add_x, y + add_y, z + add_z);
+        void IncrementPos(glm::vec3 direction) {
+            UpdatePos(x + direction.x, y + direction.y, z + direction.z);
         }
 
         void UpdatePos(float new_x, float new_y, float new_z) {
             x = new_x;
             y = new_y;
             z = new_z;
-            std::cout << x << " " << y << " " << z << "\n";
             UpdateView();
         }
 
-        void UpdateDirectionToTarget(glm::vec3 new_target) {
-            cameraTarget = new_target;
-            cameraDirection = glm::vec3(cameraPos - cameraTarget);
+        void UpdateLookDirection(float horiz_rads, float vert_rads) {
+
+            horiz_angle += sensitivity * horiz_rads;
+            vert_angle += sensitivity * vert_rads;
+
+            glm::vec3 direction(cos(horiz_angle), cos(vert_angle), sin(horiz_angle));
+            UpdateDirection(direction);
         }
 
-        void UpdateDirection(glm::vec3 new_direction) {
-            cameraDirection = new_direction;
-        }
-
-        void UpdateView() {
-            //view = glm::vec3(x, y, z);
-            UpdatePos();
-
-            glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
-            cameraRight = glm::normalize(glm::cross(up, cameraDirection));
-            cameraUp = glm::cross(cameraDirection, cameraRight);
-
-            view = glm::lookAt(cameraPos, cameraTarget, up);
+        void Walk(unsigned int key) {
+            glm::vec3 direction;
+            switch(key) {
+                case GLFW_KEY_W:
+                    direction = glm::vec3(speed * cos(horiz_angle), 0.0f, speed * sin(horiz_angle));
+                    break;
+                case GLFW_KEY_S:
+                    direction = glm::vec3(-1.0f * speed * cos(horiz_angle), 0.0f, -1.0f * speed * sin(horiz_angle));
+                    break;
+                case GLFW_KEY_D:
+                    direction = glm::vec3(-1.0f * speed * sin(horiz_angle), 0.0f, speed * cos(horiz_angle));
+                    break;
+                case GLFW_KEY_A:
+                    direction = glm::vec3(speed * sin(horiz_angle), 0.0f, -1.0f * speed * cos(horiz_angle));
+                    break;
+                default:
+                    direction = glm::vec3(0.0f, 0.0f, 0.0f);
+                    break;
+            }
+            IncrementPos(direction);
         }
 
         glm::mat4 GetView() {
@@ -60,18 +69,40 @@ class Camera {
         }
 
     private:
-        float x, y, z;
-        glm::mat4 view;
 
+        float horiz_angle, vert_angle;
+        float speed = 0.05;
+        float sensitivity = 0.01f;
+
+        float x, y, z;
+        glm::vec3 cameraPos;
         glm::vec3 cameraRight;
         glm::vec3 cameraUp;
+        glm::vec3 cameraFront;
         glm::vec3 cameraDirection;
         glm::vec3 cameraTarget;
 
-        glm::vec3 cameraPos;
+        glm::mat4 view;
 
         void UpdatePos() {
             cameraPos = glm::vec3(x, y, z);
+        }
+        
+        void UpdateDirection(glm::vec3 new_direction) {
+            cameraDirection = new_direction;
+            UpdateView();
+        }
+
+        void UpdateView() {
+
+            glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+            cameraRight = glm::normalize(glm::cross(up, cameraDirection));
+            cameraUp = glm::cross(cameraDirection, cameraRight);
+
+            cameraPos = glm::vec3(x, y, z);
+
+            UpdatePos();
+            view = glm::lookAt(cameraPos, cameraPos + cameraDirection, up);
         }
 
 };

@@ -28,7 +28,8 @@ class GLLib {
             const int window_width,
             const int window_height,
             void (*error_callback_func)(int, const char*) = NULL, 
-            void (*key_callback_func)(GLFWwindow*, int, int, int, int) = NULL
+            void (*key_callback_func)(GLFWwindow*, int, int, int, int) = NULL,
+            void (*mouse_callback_func)(GLFWwindow*, double, double) = NULL
         ) { 
             // Set error callback
             if (error_callback_func != NULL)
@@ -57,8 +58,13 @@ class GLLib {
                 return false;
             }
 
+
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);  
+
             if (key_callback_func != NULL)
                 glfwSetKeyCallback(window, key_callback_func);   
+            if (mouse_callback_func != NULL)
+                glfwSetCursorPosCallback(window, mouse_callback_func);
 
             // Set OpenGL context
             glfwMakeContextCurrent(window);
