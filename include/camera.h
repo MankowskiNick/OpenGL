@@ -18,6 +18,7 @@ class Camera {
             z = new_z;
             horiz_angle = 0.0f;
             vert_angle = 0.0f;
+            velocity = glm::vec3(0.0f, 0.0f, 0.0f);
             UpdateDirection(glm::vec3(-0.33f, -0.33f, -1.0f));
             UpdateView();
         }
@@ -38,7 +39,12 @@ class Camera {
             horiz_angle += sensitivity * horiz_rads;
             vert_angle += sensitivity * vert_rads;
 
-            glm::vec3 direction(cos(horiz_angle), cos(vert_angle), sin(horiz_angle));
+            if (vert_angle > M_PI_2)
+                vert_angle -= sensitivity * vert_rads;
+            if (vert_angle < -1 * M_PI_2)
+                vert_angle -= sensitivity * vert_rads;
+
+            glm::vec3 direction(cos(horiz_angle) * cos(vert_angle), -1 * sin(vert_angle), sin(horiz_angle) * cos(vert_angle)); // this is not as straight forward as i think
             UpdateDirection(direction);
         }
 
@@ -46,22 +52,27 @@ class Camera {
             glm::vec3 direction;
             switch(key) {
                 case GLFW_KEY_W:
-                    direction = glm::vec3(speed * cos(horiz_angle), 0.0f, speed * sin(horiz_angle));
+                    direction = glm::vec3(accel * cos(horiz_angle), 0.0f, accel * sin(horiz_angle));
                     break;
                 case GLFW_KEY_S:
-                    direction = glm::vec3(-1.0f * speed * cos(horiz_angle), 0.0f, -1.0f * speed * sin(horiz_angle));
+                    direction = glm::vec3(-1.0f * accel * cos(horiz_angle), 0.0f, -1.0f * accel * sin(horiz_angle));
                     break;
                 case GLFW_KEY_D:
-                    direction = glm::vec3(-1.0f * speed * sin(horiz_angle), 0.0f, speed * cos(horiz_angle));
+                    direction = glm::vec3(-1.0f * accel * sin(horiz_angle), 0.0f, accel * cos(horiz_angle));
                     break;
                 case GLFW_KEY_A:
-                    direction = glm::vec3(speed * sin(horiz_angle), 0.0f, -1.0f * speed * cos(horiz_angle));
+                    direction = glm::vec3(accel * sin(horiz_angle), 0.0f, -1.0f * accel * cos(horiz_angle));
                     break;
                 default:
                     direction = glm::vec3(0.0f, 0.0f, 0.0f);
                     break;
             }
-            IncrementPos(direction);
+            ModifyVelocity(direction);
+        }
+
+        void Step() {
+            IncrementPos(velocity);
+            velocity *= 0.9;
         }
 
         glm::mat4 GetView() {
@@ -71,10 +82,13 @@ class Camera {
     private:
 
         float horiz_angle, vert_angle;
-        float speed = 0.05;
+        float speed = 0.06f;
+        float accel = 0.03f;
         float sensitivity = 0.01f;
 
         float x, y, z;
+        glm::vec3 velocity;
+
         glm::vec3 cameraPos;
         glm::vec3 cameraRight;
         glm::vec3 cameraUp;
@@ -83,6 +97,20 @@ class Camera {
         glm::vec3 cameraTarget;
 
         glm::mat4 view;
+
+        
+        void ModifyVelocity(glm::vec3 direction) {
+            float vx, vy, vz;
+            vx = velocity.x + direction.x;
+            vy = velocity.y + direction.y;
+            vz = velocity.z + direction.z;
+            float cur_speed = sqrt(pow(vx, 2) + pow(vz, 2));
+            velocity = glm::vec3(vx, vy, vz);
+
+            if (cur_speed > speed) {
+                velocity = (velocity / cur_speed) * speed;
+            }
+        }
 
         void UpdatePos() {
             cameraPos = glm::vec3(x, y, z);

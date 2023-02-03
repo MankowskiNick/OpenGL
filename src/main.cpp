@@ -27,7 +27,9 @@ void error_callback(int error, const char* description) {
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GLFW_TRUE);
-    global_camera->Walk(key);
+    if (action == GLFW_REPEAT) // TODO: Fix this to smooth out input.  It is currently functional, but not great.
+        global_camera->Walk(key);
+    
 }
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
@@ -168,7 +170,7 @@ int main(void)
         i += 0.01;
 
         //camera.UpdatePos(6.0f * cos(i), 0.0f, 6.0f * sin(i) );
-
+        camera.Step();
         gl_lib->shader.SetMat4f("viewMatrix", camera.GetView());
 
         // Clear the screen

@@ -60,6 +60,7 @@ class GLLib {
 
 
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);  
+            glfwSetInputMode(window, GLFW_STICKY_KEYS, GLFW_TRUE);
 
             if (key_callback_func != NULL)
                 glfwSetKeyCallback(window, key_callback_func);   
